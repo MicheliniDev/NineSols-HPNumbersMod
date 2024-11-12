@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyName>ExampleMod</AssemblyName>
-        <Description>Example Mod</Description>
+        <AssemblyName>HPNumbers</AssemblyName>
+        <Description>Shows Yi's HP number</Description>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Version>1.0.0</Version>
         <LangVersion>latest</LangVersion>
@@ -14,11 +14,7 @@
         <NineSolsPath Condition="'$(OS)' == 'Windows_NT'">C:/Program Files (x86)/Steam/steamapps/common/Nine Sols</NineSolsPath>
         <NineSolsPath Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.local/share/Steam/steamapps/common/Nine Sols</NineSolsPath>
         
-        <!-- If you're not using R2Modman/Thunderstore, this can be NineSolsPath as well. Only used in CopyDir -->
-        <ProfileDir Condition="'$(OS)' == 'Windows_NT'">C:/Users/$username/AppData/Roaming/r2modmanPlus-local/NineSols/profiles/Default</ProfileDir>
-        <ProfileDir Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.config/r2modmanPlus-local/NineSols/profiles/Default</ProfileDir>
-        <!-- After building, copy the dll to this folder. Useful for hot-reloading: https://github.com/BepInEx/BepInEx.Debug/blob/master/README.md#scriptengine -->
-        <!--<CopyDir>$(ProfileDir)/BepInEx/scripts</CopyDir>-->
+		<CopyDir>$(NineSolsPath)/BepInEx/scripts</CopyDir>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,6 +29,12 @@
         </Reference>
         <Reference Include="InControl">
             <HintPath>$(NineSolsPath)/NineSols_Data/Managed/InControl.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro">
+          <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Nine Sols\NineSols_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+          <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Nine Sols\NineSols_Data\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -50,11 +52,6 @@
     <Target Name="CopyMod" AfterTargets="PostBuildEvent" Condition="'$(CopyDir)' != ''">
         <Message Importance="high" Text="copying $(TargetPath) to $(CopyDir) ..." />
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true"/>
-    </Target>
-
-    <Target Name="PackageMod" AfterTargets="Publish">
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true"/>
-        <Exec Command="tcli build --config-path ../thunderstore/thunderstore.toml"/>
+        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true" />
     </Target>
 </Project>

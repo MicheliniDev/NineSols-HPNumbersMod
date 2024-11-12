@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace ExampleMod;
+namespace HPNumbers;
 
 [HarmonyPatch]
 public class Patches {
